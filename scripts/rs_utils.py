@@ -113,10 +113,11 @@ def get_points(data):
             les None sont remplacés par (-1000000, -1000000, -1000000)
             le numéro du body (dernier de la liste) doit être enlevé
     """
-    nb = 18
-    if len(data) % 3 == 0 and len(data)/3 == nb:
+    # Réception de 54=3*18 ou 45=3*15
+    if len(data) == 54 or len(data) == 45:
+        nombre = int(len(data)/3)
         points = []
-        for i in range(nb):
+        for i in range(nombre):
             # data[de 0 à 54] n'est jamais None car vient de l'OSC
             val = [ data[(3*i)],
                     data[(3*i)+1],
@@ -130,14 +131,14 @@ def get_points(data):
                 points.append([val[0]/1000, val[2]/1000, -val[1]/1000])
     else:
         points = None
-    return points
 
+    return points
 
 
 if __name__ == '__main__':
 
-    filtre = Filtre(18, 20)
-    fichier = "7.json"
+    filtre = Filtre(15, 20)
+    fichier = "cap_2021_04_07_14_47.json"
     data = read_json(fichier)
 
     for i in range(len(data)):

@@ -83,7 +83,7 @@ def add_object(obj, position, life):
     game_scn = get_scene_with_name("Scene")
     return game_scn.addObject(obj, gl.empty, life)
 
-
+# Ne sert qu'à lister les keys !
 JOINTS = {  "00": "head",
             "01": "cou",
             "02": "epaule.r",
@@ -106,24 +106,39 @@ JOINTS = {  "00": "head",
             "19": "head"}
 
 # Définition des points origine, direction des cubes de matérialisation des os
-PAIRS = {   "upper_arm.L": [5, 6],
-            "forearm.L": [6, 7],
-            "upper_arm.R": [2, 3],
-            "forearm.R": [3, 4],
-            "thigh.L": [11, 12],
-            "shin.L": [12, 13],
-            "thigh.R": [8, 9],
-            "shin.R": [9, 10],
-            "shoulder.L": [1, 5],
-            "shoulder.R": [1, 2],
-            "tronc.L": [5, 11],
-            "tronc.R": [2, 8],
-            "bassin": [8, 11],
-            "cou": [1, 0],
-            "yeux": [15, 16],
-            "oreille.R": [15, 14],
-            "oreille.L": [16, 17],
-            "head": [0, 19]}
+PAIRS_COCO = {  "upper_arm.L": [5, 6],
+                "forearm.L": [6, 7],
+                "upper_arm.R": [2, 3],
+                "forearm.R": [3, 4],
+                "thigh.L": [11, 12],
+                "shin.L": [12, 13],
+                "thigh.R": [8, 9],
+                "shin.R": [9, 10],
+                "shoulder.L": [1, 5],
+                "shoulder.R": [1, 2],
+                "tronc.L": [5, 11],
+                "tronc.R": [2, 8],
+                "bassin": [8, 11],
+                "cou": [1, 0],
+                "yeux": [15, 16],
+                "oreille.R": [15, 14],
+                "oreille.L": [16, 17],
+                "head": [0, 19]}
+
+PAIRS_MPI = {  "upper_arm.L": [5, 6],
+                "forearm.L": [6, 7],
+                "upper_arm.R": [2, 3],
+                "forearm.R": [3, 4],
+                "thigh.L": [11, 12],
+                "shin.L": [12, 13],
+                "thigh.R": [8, 9],
+                "shin.R": [9, 10],
+                "shoulder.L": [1, 5],
+                "shoulder.R": [1, 2],
+                "tronc.L": [5, 11],
+                "tronc.R": [2, 8],
+                "bassin": [8, 11],
+                "head": [1, 0]}
 
 
 # Liste des os du squelette

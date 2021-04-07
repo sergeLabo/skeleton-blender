@@ -7,7 +7,7 @@ from bge import events
 from mathutils import Vector, Quaternion, Matrix
 
 from scripts.utils import get_all_objects
-from scripts.utils import JOINTS, PAIRS
+from scripts.utils import JOINTS, PAIRS_COCO, PAIRS_MPI
 from scripts.rs_utils import get_points
 
 
@@ -66,6 +66,7 @@ def set_body_location():
         gl.spheres[18].worldPosition = [pos[0], pos[1], pos[2]]
         gl.spheres[18].worldScale  = [1.5*gl.scale, 1.5*gl.scale, 1.5*gl.scale]
 
+
 def set_head_location():
     """ Le point '19' est au centre de [14, 15] soit au centre des yeux.
     Il ne vient pas de COCO !
@@ -79,7 +80,12 @@ def set_head_location():
 def set_cubes_position_orientation_scale():
     """Matérialisation des os par des cubes allongés."""
 
-    for bone, [p1, p2] in PAIRS.items():
+    if gl.mode == "MPI":
+        pairs = PAIRS_MPI
+    elif gl.mode == "COCO":
+        pairs = PAIRS_COCO
+
+    for bone, [p1, p2] in pairs.items():
         bone_cube_obj = gl.all_obj[bone]
         apply_objet_position_orientation(gl.spheres[p1],
                                          gl.spheres[p2],

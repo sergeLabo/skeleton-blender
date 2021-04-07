@@ -24,21 +24,11 @@ def on_points(*args):
     gl.receive_at = gl.frame_number
 
 
-def parts(args, n):
-    points = []
-    nb = 18
-    # #print(args)
-    for i in range(nb):
-        points.append([args[n*i], args[n*i+1]])
-    # #print(points)
-    return points
-
-
 def osc_server_init():
     gl.server = OSCThreadServer()
     gl.server.listen('0.0.0.0', port=8003, default=True)
     # Les callbacks du serveur
-    gl.server.default_handler = default_handler
+    # #gl.server.default_handler = default_handler
     gl.server.bind(b'/points', on_points)
 
 
@@ -74,22 +64,22 @@ def main():
     gl.body_visible = 1
     gl.person.visible = 0
 
-    gl.debug = 1  # 1=avec fichier enregistré
-    if gl.debug:
-        gl.data_4 = read_json("./scripts/4.json")
-        print("Nombre de frame 4 =", len(gl.data_4))
-        gl.data_7 = read_json("./scripts/7.json")
-        print("Nombre de frame 7 =", len(gl.data_7))
-        gl.data_14 = read_json("./scripts/14.json")
-        print("Nombre de frame 14 =", len(gl.data_14))
-        gl.data_big = read_json("./scripts/cap_2021_04_03_14_44_fps_14.json")
-        print("Nombre de frame big =", len(gl.data_big))
-        gl.data = gl.data_4
+    gl.debug = 0  # 1=avec fichier enregistré
+    if gl.debug:  # bordel à arranger
+        # #b = "./scripts/cap_2021_04_03_14_44_fps_14.json"
+        b = './scripts/cap_2021_04_07_14_47.json'
+        gl.data = read_json(b)
+        print("Nombre de frame big =", len(gl.data))
     else:
         osc_server_init()
 
-    # Le filtre Savonarol Brigowski de scipy
-    gl.filtre = Filtre(18, 20)
+    # Le filtre Savonarol Wakowski de scipy
+    gl.mode = "MPI"  # ou "COCO"
+    if gl.mode == "MPI":
+        nombre = 15
+    elif gl.mode == "COCO":
+        nombre = 18
+    gl.filtre = Filtre(nombre, 20)
 
     # Placement et échelle dans la scène
     gl.scale = 1
