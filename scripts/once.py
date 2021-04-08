@@ -4,6 +4,7 @@ import json
 
 from bge import logic as gl
 from scripts.utils import get_all_objects, add_object, read_json
+from scripts.utils import JOINTS, PAIRS_COCO, PAIRS_MPI
 from scripts.rs_utils import Filtre, get_points
 
 from oscpy.server import OSCThreadServer
@@ -77,8 +78,10 @@ def main():
     gl.mode = "MPI"  # ou "COCO"
     if gl.mode == "MPI":
         nombre = 15
+        gl.pairs = PAIRS_MPI
     elif gl.mode == "COCO":
         nombre = 18
+        gl.pairs = PAIRS_COCO
     gl.filtre = Filtre(nombre, 20)
 
     # Placement et échelle dans la scène

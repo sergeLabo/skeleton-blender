@@ -6,10 +6,8 @@ from bge import logic as gl
 from bge import events
 from mathutils import Vector, Quaternion, Matrix
 
-from scripts.utils import get_all_objects
-from scripts.utils import JOINTS, PAIRS_COCO, PAIRS_MPI
+from scripts.utils import get_all_objects, JOINTS
 from scripts.rs_utils import get_points
-
 
 
 def apply_objet_position_orientation(objet_point_1, objet_point_2, objet):
@@ -80,12 +78,7 @@ def set_head_location():
 def set_cubes_position_orientation_scale():
     """Matérialisation des os par des cubes allongés."""
 
-    if gl.mode == "MPI":
-        pairs = PAIRS_MPI
-    elif gl.mode == "COCO":
-        pairs = PAIRS_COCO
-
-    for bone, [p1, p2] in pairs.items():
+    for bone, [p1, p2] in gl.pairs.items():
         bone_cube_obj = gl.all_obj[bone]
         apply_objet_position_orientation(gl.spheres[p1],
                                          gl.spheres[p2],
@@ -142,7 +135,8 @@ def visible_or_not():
                 obj.visible = 1
         for num in JOINTS.keys():
             gl.all_obj[num].visible = 1
-        for cube in PAIRS.keys():
+
+        for cube in gl.pairs.keys():
             gl.all_obj[cube].visible = 1
         gl.body_visible = 0
     else:
@@ -152,7 +146,7 @@ def visible_or_not():
                 obj.visible = 0
         for num in JOINTS.keys():
             gl.all_obj[num].visible = 0
-        for cube in PAIRS.keys():
+        for cube in gl.pairs.keys():
             gl.all_obj[cube].visible = 0
         gl.body_visible = 1
 
