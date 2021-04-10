@@ -56,13 +56,27 @@ def set_sphere_position_scale():
 
 
 def set_body_location():
-    """ Le point '18' est au centre de [12, 11] soit au centre du bassin.
+    """ Le point '18' est au centre de [8, 11] soit au centre du bassin.
     Il ne vient pas de COCO !
+    Le bone spine suit les rotation de 18 sur Z
     """
+    # Position
     if gl.points[8] and gl.points[11]:
         pos = (gl.spheres[8].worldPosition + gl.spheres[11].worldPosition)/2
         gl.spheres[18].worldPosition = [pos[0], pos[1], pos[2]]
         gl.spheres[18].worldScale  = [1.5*gl.scale, 1.5*gl.scale, 1.5*gl.scale]
+
+    # Rotation: direction = de 11 à 8
+    if gl.points[8] and gl.points[11]:
+            a = gl.spheres[8].worldPosition
+            b = gl.spheres[11].worldPosition
+            direction  = (a - b).normalized()
+            axis_align = Vector((1.0, 0.0, 0.0))
+            angle = axis_align.angle(direction)
+            axis  = axis_align.cross(direction)
+            quat = Quaternion(axis, angle)
+            gl.spheres[18].localOrientation = quat.to_euler('XYZ')
+
 
 
 def set_head_location():
@@ -166,7 +180,7 @@ def main():
             if gl.frame_number < 20:
                 every = 1
             else:
-                every = 20
+                every = gl.every
             # les datas sans le body
             data = gl.data[gl.nums][:-1]
             if gl.frame_number % every == 0:

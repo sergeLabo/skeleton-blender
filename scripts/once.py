@@ -27,7 +27,7 @@ def on_points(*args):
 
 def osc_server_init():
     gl.server = OSCThreadServer()
-    gl.server.listen('0.0.0.0', port=8003, default=True)
+    gl.server.listen(b'localhost', port=8003, default=True)
     # Les callbacks du serveur
     # #gl.server.default_handler = default_handler
     gl.server.bind(b'/points', on_points)
@@ -58,21 +58,22 @@ def main():
     gl.server = None
     gl.points = None
     gl.frame_number = 0
-    gl.nums = 20
+    gl.nums = 2022
     gl.new = 0
     gl.receive_at = 0
     gl.tempo = 0
     gl.body_visible = 1
     gl.person.visible = 0
 
-    gl.debug = 0  # 1=avec fichier enregistré
-    if gl.debug:  # bordel à arranger
-        # #b = "./scripts/cap_2021_04_03_14_44_fps_14.json"
-        b = './scripts/cap_2021_04_07_14_47.json'
+    gl.debug = 1  # 1=avec fichier enregistré
+    if gl.debug:
+        b = './scripts/json/cap_2021_04_08_15_39.json'
         gl.data = read_json(b)
         print("Nombre de frame big =", len(gl.data))
     else:
         osc_server_init()
+
+    gl.every = 5
 
     # Le filtre Savonarol Wakowski de scipy
     gl.mode = "MPI"  # ou "COCO"
