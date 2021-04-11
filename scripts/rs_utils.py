@@ -10,6 +10,8 @@ except:
     print("Vous devez installer scipy !")
     SCIPY = False
 
+# debug
+# #SCIPY = False
 
 class Filtre:
     """Filtre les points reçus du RealSense
@@ -45,7 +47,7 @@ class Filtre:
 
     def get_smooth_points(self):
 
-        new_points = [0]*18
+        new_points = [0]*self.nb_points
         for i in range(self.nb_points):  # 18
             if self.points:
                 if self.points[i]:
@@ -60,15 +62,9 @@ class Filtre:
                         else:
                             if SCIPY:
                                 sav = savgol_filter(lst, self.window_length, self.order)
-                                new_points[i].append(round(sav[-1], 3))
+                                new_points[i].append(round(sav[-1], 4))
                             else:
-                                new_points[i].append(round(self.piles[i][j][-1], 3))
-
-                            # #if i == 4 and j == 0:
-                                # #print("\n\n")
-                                # #print("sav ", sav)
-                                # #print("lst ", lst)
-                                # #print("last sav ", round(sav[-1], 3))
+                                new_points[i].append(round(self.piles[i][j][-1], 4))
 
                     if not valid:
                         new_points[i] = None

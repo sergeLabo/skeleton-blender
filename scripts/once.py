@@ -2,12 +2,13 @@
 from time import time
 import json
 
+from oscpy.server import OSCThreadServer
+
 from bge import logic as gl
 from scripts.utils import get_all_objects, add_object, read_json
 from scripts.utils import JOINTS, PAIRS_COCO, PAIRS_MPI
 from scripts.rs_utils import Filtre, get_points
-
-from oscpy.server import OSCThreadServer
+from scripts.sound import EasyAudio
 
 
 def default_handler(*args):
@@ -25,12 +26,30 @@ def on_points(*args):
     gl.receive_at = gl.frame_number
 
 
+def on_note(i):
+    print("Play note", i)
+    if gl.notes:
+        gl.notes[str(i)].play()
+
+
 def osc_server_init():
     gl.server = OSCThreadServer()
-    gl.server.listen(b'localhost', port=8003, default=True)
+    gl.server.listen('0.0.0.0', port=8003, default=True)
     # Les callbacks du serveur
-    # #gl.server.default_handler = default_handler
+    gl.server.default_handler = default_handler
     gl.server.bind(b'/points', on_points)
+    gl.server.bind(b'/note', on_note)
+
+def get_notes():
+    """ gl.music["BlueScorpion"].set_volume(0.2)
+        gl.motorSound[i] = EasyAudio(["son_moteur"], "//samples/")
+        gl.motorSound[0]["son_moteur"].repeat()
+        EasyAudio(self, soundList, path, buffered=True)
+    """
+    soundList = []
+    for i in range(36):
+        soundList.append(str(i))
+    gl.notes = EasyAudio(soundList, "//samples/")
 
 
 def main():
@@ -65,14 +84,14 @@ def main():
     gl.body_visible = 1
     gl.person.visible = 0
 
-    gl.debug = 1  # 1=avec fichier enregistré
+    gl.debug = 0  # 1=avec fichier enregistré
     if gl.debug:
         b = './scripts/json/cap_2021_04_08_15_39.json'
         gl.data = read_json(b)
         print("Nombre de frame big =", len(gl.data))
     else:
+        gl.notes = None
         osc_server_init()
-
     gl.every = 5
 
     # Le filtre Savonarol Wakowski de scipy
@@ -83,10 +102,13 @@ def main():
     elif gl.mode == "COCO":
         nombre = 18
         gl.pairs = PAIRS_COCO
-    gl.filtre = Filtre(nombre, 20)
+    gl.filtre = Filtre(nombre, 50)
 
     # Placement et échelle dans la scène
     gl.scale = 1
     gl.up_down = 1.5
     gl.left_right = 0.2
     gl.av_ar = -2.5
+
+    # audio
+    get_notes()

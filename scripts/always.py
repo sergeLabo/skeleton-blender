@@ -68,16 +68,17 @@ def set_body_location():
 
     # Rotation: direction = de 11 à 8
     if gl.points[8] and gl.points[11]:
+        try:
             a = gl.spheres[8].worldPosition
             b = gl.spheres[11].worldPosition
-            direction  = (a - b).normalized()
+            direction  = (b - a).normalized()
             axis_align = Vector((1.0, 0.0, 0.0))
             angle = axis_align.angle(direction)
             axis  = axis_align.cross(direction)
             quat = Quaternion(axis, angle)
             gl.spheres[18].localOrientation = quat.to_euler('XYZ')
-
-
+        except:
+            pass
 
 def set_head_location():
     """ Le point '19' est au centre de [14, 15] soit au centre des yeux.
@@ -201,7 +202,7 @@ def main():
             set_sphere_position_scale()
             set_cubes_position_orientation_scale()
             set_body_location()
-            set_head_location()
+            # #set_head_location()  # pour COCO
 
             gl.new = 0
             gl.metarig.update()
