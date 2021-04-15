@@ -46,7 +46,7 @@ def apply_objet_position_orientation(objet_point_1, objet_point_2, objet):
 
 def set_sphere_position_scale():
     if gl.points:
-        for i in range(18):
+        for i in range(gl.nombre):
             if gl.points[i]:
                 v = Vector(gl.points[i])*gl.scale
                 gl.spheres[i].worldPosition = [ v[0] + gl.left_right,
@@ -55,12 +55,12 @@ def set_sphere_position_scale():
                 gl.spheres[i].worldScale = [1.5*gl.scale, 1.5*gl.scale, 1.5*gl.scale]
 
 
-def set_body_location():
+def set_body_position_orientation():
     """ Le point '18' est au centre de [8, 11] soit au centre du bassin.
     Il ne vient pas de COCO !
     Le bone spine suit les rotation de 18 sur Z
     """
-    # Position
+    # Position 8 à droite 11 à gauche
     if gl.points[8] and gl.points[11]:
         pos = (gl.spheres[8].worldPosition + gl.spheres[11].worldPosition)/2
         gl.spheres[18].worldPosition = [pos[0], pos[1], pos[2]]
@@ -79,6 +79,7 @@ def set_body_location():
             gl.spheres[18].localOrientation = quat.to_euler('XYZ')
         except:
             pass
+
 
 def set_head_location():
     """ Le point '19' est au centre de [14, 15] soit au centre des yeux.
@@ -194,14 +195,14 @@ def main():
 
     if gl.points:
         gl.filtre.add(gl.points)
-        gl.points = gl.filtre.get_smooth_points()
+        # #gl.points = gl.filtre.get_smooth_points()
 
         # TODO débile !! mais vrai
         if gl.points:
 
             set_sphere_position_scale()
             set_cubes_position_orientation_scale()
-            set_body_location()
+            set_body_position_orientation()
             # #set_head_location()  # pour COCO
 
             gl.new = 0

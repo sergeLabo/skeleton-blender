@@ -16,6 +16,7 @@ def default_handler(*args):
 
 
 def on_points(*args):
+    # J'ôte le body
     body = args[-1]
     args = args[:-1]
 
@@ -84,9 +85,9 @@ def main():
     gl.body_visible = 1
     gl.person.visible = 0
 
-    gl.debug = 0  # 1=avec fichier enregistré
+    gl.debug = 1  # 1=avec fichier enregistré
     if gl.debug:
-        b = './scripts/json/cap_2021_04_08_15_39.json'
+        b = './scripts/json/cap_2021_04_11_15_14.json'
         gl.data = read_json(b)
         print("Nombre de frame big =", len(gl.data))
     else:
@@ -97,12 +98,12 @@ def main():
     # Le filtre Savonarol Wakowski de scipy
     gl.mode = "MPI"  # ou "COCO"
     if gl.mode == "MPI":
-        nombre = 15
+        gl.nombre = 15
         gl.pairs = PAIRS_MPI
     elif gl.mode == "COCO":
-        nombre = 18
+        gl.nombre = 18
         gl.pairs = PAIRS_COCO
-    gl.filtre = Filtre(nombre, 50)
+    gl.filtre = Filtre(gl.nombre, 50)
 
     # Placement et échelle dans la scène
     gl.scale = 1
